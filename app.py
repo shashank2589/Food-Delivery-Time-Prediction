@@ -1,6 +1,11 @@
 from flask import Flask,request,render_template,jsonify
 from src.pipeline.prediction_pipeline import CustomData,PredictPipeline
 
+from src.logger import logging
+from src.exception import CustomException
+from src.components.data_ingestion import DataIngestion
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 application=Flask(__name__)
 app=application
@@ -35,8 +40,21 @@ def predict_datapoint():
         result=round(pred[0],2)
 
         return render_template('result.html',final_result=result)
+    
 
+@app.route('/train')
+def train_pipeline():
+    obj = DataIngestion()
+    train_data_path, test_data_path = obj.initiate_data_ingestion()
+    
+    data_transformation = DataTransformation()
+    train_arr, test_arr, _ = data_transformation.initaite_data_transformation(train_data_path, test_data_path)
 
+    model_trainer = ModelTrainer()
+    best_model_name, best_model_score, model_report = model_trainer.initate_model_training(train_arr, test_arr)
+
+    return render_template('train_pipeline.html', best_model_name=best_model_name, best_model_score=best_model_score, model_report=model_report)
+    
 
 if __name__=="__main__":
     app.run(host='0.0.0.0',debug=True, port=5000)
