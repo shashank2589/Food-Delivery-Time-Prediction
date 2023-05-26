@@ -51,9 +51,9 @@ def train_pipeline():
     train_arr, test_arr, _ = data_transformation.initaite_data_transformation(train_data_path, test_data_path)
 
     model_trainer = ModelTrainer()
-    best_model_name, best_model_score, model_report = model_trainer.initate_model_training(train_arr, test_arr)
+    best_model_name, best_model_score, train_model_report, test_model_report = model_trainer.initate_model_training(train_arr, test_arr)
 
-    return render_template('train_pipeline.html', best_model_name=best_model_name, best_model_score=best_model_score, model_report=model_report)
+    return render_template('train_pipeline.html', best_model_name=best_model_name, best_model_score=best_model_score, train_model_report=train_model_report, test_model_report=test_model_report)
     
 
 if __name__=="__main__":

@@ -25,8 +25,10 @@
 </head>
 <body>
     <h2>Best Model Name: {{ best_model_name }}</h2>
-    <h2>Best Model Score: {{ best_model_score.round(0) }}</h2>
-    <h2>Model Report:</h2>
-    <pre>{{ model_report }}</pre>
+    <h2>Best Model Score: {{ best_model_score.round(2) }}</h2>
+    <h2>Train Model Report:</h2>
+    <pre>{{ train_model_report }}</pre>
+    <h2>Test Model Report:</h2>
+    <pre>{{ test_model_report }}</pre>
 </body>
-</html>
+</html> 

@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression,Ridge,Lasso,ElasticNet
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor, BaggingRegressor
+import xgboost as xgb
 from src.exception import CustomException
 from src.logger import logging
 
@@ -31,22 +33,24 @@ class ModelTrainer:
             )
 
             models={
-            'LinearRegression':LinearRegression(),
-            'Lasso':Lasso(),
-            'Ridge':Ridge(),
-            'Elasticnet':ElasticNet()
+            'Decision Tree':DecisionTreeRegressor(min_samples_leaf=6, max_depth=7, random_state=42),
+            'Random Forest':RandomForestRegressor(n_estimators=200, min_samples_leaf=2, max_depth=10, random_state=42),
+            'Bagging':BaggingRegressor(base_estimator=DecisionTreeRegressor(min_samples_leaf=6, max_depth=7, random_state=42), n_estimators=10, random_state=42),
+            'XGBoost':xgb.XGBRegressor(n_estimators=200, max_depth=5, learning_rate=0.1 ,objective='reg:squarederror', random_state=42)
         }
             
-            model_report:dict=evaluate_model(X_train,y_train,X_test,y_test,models)
-            print(model_report)
+            train_model_report, test_model_report=evaluate_model(X_train,y_train,X_test,y_test,models)
+            print(train_model_report)
+            print(test_model_report)
             print('\n', '='*50, '\n')
-            logging.info(f'Model Report : {model_report}')
+            logging.info(f'Train Model Report : {train_model_report}')
+            logging.info(f'Test Model Report : {test_model_report}')
 
             # To get best model score from dictionary 
-            best_model_score = max(sorted(model_report.values()))
+            best_model_score = max(test_model_report.values())
 
-            best_model_name = list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
+            best_model_name = list(test_model_report.keys())[
+                list(test_model_report.values()).index(best_model_score)
             ]
             
             best_model = models[best_model_name]
@@ -63,4 +67,4 @@ class ModelTrainer:
         except Exception as e:
             logging.info('Exception occured at Model Training')
             raise CustomException(e,sys)
-        return best_model_name, best_model_score, model_report
+        return best_model_name, best_model_score, train_model_report, test_model_report

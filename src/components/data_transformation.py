@@ -46,16 +46,14 @@ class DataTransformation:
             cat_pipeline=Pipeline(
             steps=[
             ('imputer',SimpleImputer(strategy='most_frequent')),
-            ('ordinalencoder',OrdinalEncoder(categories=[traffic_categories])),
-            ('scaler',StandardScaler())
+            ('ordinalencoder',OrdinalEncoder(categories=[traffic_categories]))
             ]
              )
 
             cat_pipeline1=Pipeline(
             steps=[
             ('imputer',SimpleImputer(strategy='most_frequent')),
-            ('onehotencoder',OneHotEncoder(handle_unknown = "ignore")),
-            ('scaler',StandardScaler(with_mean=False))
+            ('onehotencoder',OneHotEncoder(handle_unknown = "ignore"))
             ]
             )
 
