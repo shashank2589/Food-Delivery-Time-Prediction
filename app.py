@@ -1,6 +1,5 @@
 from flask import Flask,request,render_template,jsonify
 from src.pipeline.prediction_pipeline import CustomData,PredictPipeline
-
 from src.logger import logging
 from src.exception import CustomException
 from src.components.data_ingestion import DataIngestion
