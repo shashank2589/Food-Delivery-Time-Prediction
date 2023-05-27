@@ -10,7 +10,6 @@ from src.components.model_trainer import ModelTrainer
 application=Flask(__name__)
 app=application
 
-
 @app.route('/')
 def home_page():
     return render_template('index.html')
