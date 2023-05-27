@@ -12,3 +12,6 @@ conda activate venv/
 ```
 pip install -r requirements.txt
 ```
+
+## Docker Image Created
+![Docker](/aws/aws_page-0003.jpg)
